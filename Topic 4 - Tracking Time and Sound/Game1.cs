@@ -13,9 +13,15 @@ namespace Topic_4___Tracking_Time_and_Sound
         Rectangle window;
 
         Texture2D bombTexture;
+        Texture2D pliersTexture;
+
+
         Rectangle bombRect;
+        Rectangle pliersRect;
 
         SpriteFont bombText;
+
+        bool exploded;
 
         SoundEffect explosion;
         SoundEffectInstance explosionInstance;
@@ -41,8 +47,9 @@ namespace Topic_4___Tracking_Time_and_Sound
             _graphics.ApplyChanges();
 
             bombRect = new Rectangle(50, 50, 700, 400);
-
+            exploded = false;
             seconds = 0f;
+            seconds = 0;
 
             base.Initialize();
         }
@@ -54,15 +61,10 @@ namespace Topic_4___Tracking_Time_and_Sound
             // TODO: use this.Content to load your game content here
 
             bombTexture = Content.Load<Texture2D>("bomb");
+            pliersTexture = Content.Load<Texture2D>("pliers");
             bombText = Content.Load<SpriteFont>("BombFont");
             explosion = Content.Load<SoundEffect>("explosion");
             explosionInstance = explosion.CreateInstance();
-            if (seconds >= 10)
-            {
-                explosionInstance.Play();
-                seconds = 0f;
-
-            }
 
         }
 
@@ -76,27 +78,31 @@ namespace Topic_4___Tracking_Time_and_Sound
                 Exit();
 
             // TODO: Add your update logic here
+            if (!exploded)
+                seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (seconds > 10)
+            if (seconds >= 15)
+            {
+                explosionInstance.Play();
                 seconds = 0f;
-             
-
-            if (explosion && explosionInstance.State
-                     
-
-
+                exploded = true;
+            }
+                
+            if (exploded && explosionInstance.State == SoundState.Stopped)
+                Exit();
             base.Update(gameTime);
+
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Azure);
 
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(bombTexture, bombRect, Color.White);
+            _spriteBatch.Draw(bombTexture, bombRect,Color.White);
+            _spriteBatch.Draw(pliersTexture,pliersRect, Color.White);
             _spriteBatch.DrawString(bombText, seconds.ToString("00:0"), new Vector2(270, 200), Color.Black);
             _spriteBatch.End();
 
