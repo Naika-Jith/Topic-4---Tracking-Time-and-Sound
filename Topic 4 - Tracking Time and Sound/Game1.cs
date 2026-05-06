@@ -13,11 +13,12 @@ namespace Topic_4___Tracking_Time_and_Sound
         Rectangle window;
 
         Texture2D bombTexture;
-        Texture2D pliersTexture;
-
+        Texture2D boomTexture;
+       
 
         Rectangle bombRect;
-        Rectangle pliersRect;
+        Rectangle boomRect;
+       
 
         SpriteFont bombText;
 
@@ -47,6 +48,7 @@ namespace Topic_4___Tracking_Time_and_Sound
             _graphics.ApplyChanges();
 
             bombRect = new Rectangle(50, 50, 700, 400);
+            boomRect = new Rectangle(50, 50, 700, 400);
             exploded = false;
             seconds = 0f;
             seconds = 0;
@@ -61,7 +63,7 @@ namespace Topic_4___Tracking_Time_and_Sound
             // TODO: use this.Content to load your game content here
 
             bombTexture = Content.Load<Texture2D>("bomb");
-            pliersTexture = Content.Load<Texture2D>("pliers");
+            boomTexture = Content.Load<Texture2D>("boom"); 
             bombText = Content.Load<SpriteFont>("BombFont");
             explosion = Content.Load<SoundEffect>("explosion");
             explosionInstance = explosion.CreateInstance();
@@ -70,7 +72,10 @@ namespace Topic_4___Tracking_Time_and_Sound
 
         protected override void Update(GameTime gameTime)
         {
+            this.Window.Title = mouseState.Position.ToString();
+
             mouseState = Mouse.GetState();
+
             if (mouseState.LeftButton == ButtonState.Pressed)
                 seconds = 0f;
 
@@ -101,9 +106,18 @@ namespace Topic_4___Tracking_Time_and_Sound
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(bombTexture, bombRect,Color.White);
-            _spriteBatch.Draw(pliersTexture,pliersRect, Color.White);
-            _spriteBatch.DrawString(bombText, seconds.ToString("00:0"), new Vector2(270, 200), Color.Black);
+
+            if (!exploded)
+            {
+                _spriteBatch.Draw(bombTexture, bombRect, Color.White);
+                _spriteBatch.DrawString(bombText, seconds.ToString("00:0"), new Vector2(270, 200), Color.Black);
+            }
+            else
+            {
+                _spriteBatch.Draw(boomTexture, boomRect, Color.White);
+            }
+
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
