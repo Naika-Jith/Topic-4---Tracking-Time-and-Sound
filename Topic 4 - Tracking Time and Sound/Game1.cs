@@ -14,10 +14,12 @@ namespace Topic_4___Tracking_Time_and_Sound
 
         Texture2D bombTexture;
         Texture2D boomTexture;
+        Texture2D pliersTexture;
        
 
         Rectangle bombRect;
         Rectangle boomRect;
+        Rectangle pliersRect;
        
 
         SpriteFont bombText;
@@ -49,6 +51,7 @@ namespace Topic_4___Tracking_Time_and_Sound
 
             bombRect = new Rectangle(50, 50, 700, 400);
             boomRect = new Rectangle(50, 50, 700, 400);
+            pliersRect = new Rectangle(50, 50, 700, 400);
             exploded = false;
             seconds = 0f;
             seconds = 0;
@@ -63,7 +66,8 @@ namespace Topic_4___Tracking_Time_and_Sound
             // TODO: use this.Content to load your game content here
 
             bombTexture = Content.Load<Texture2D>("bomb");
-            boomTexture = Content.Load<Texture2D>("boom"); 
+            boomTexture = Content.Load<Texture2D>("boom");
+            pliersTexture = Content.Load<Texture2D>("pliers");
             bombText = Content.Load<SpriteFont>("BombFont");
             explosion = Content.Load<SoundEffect>("explosion");
             explosionInstance = explosion.CreateInstance();
@@ -111,6 +115,7 @@ namespace Topic_4___Tracking_Time_and_Sound
             {
                 _spriteBatch.Draw(bombTexture, bombRect, Color.White);
                 _spriteBatch.DrawString(bombText, seconds.ToString("00:0"), new Vector2(270, 200), Color.Black);
+                _spriteBatch.Draw(pliersTexture, pliersRect, Color.White);
             }
             else
             {
