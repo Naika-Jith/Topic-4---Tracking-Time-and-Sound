@@ -16,10 +16,12 @@ namespace Topic_4___Tracking_Time_and_Sound
         Texture2D boomTexture;
         Texture2D pliersTexture;
        
+       
 
         Rectangle bombRect;
         Rectangle boomRect;
         Rectangle pliersRect;
+        Rectangle buttonRect;
        
 
         SpriteFont bombText;
@@ -37,7 +39,8 @@ namespace Topic_4___Tracking_Time_and_Sound
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
+
         }
 
         protected override void Initialize()
@@ -51,7 +54,8 @@ namespace Topic_4___Tracking_Time_and_Sound
 
             bombRect = new Rectangle(50, 50, 700, 400);
             boomRect = new Rectangle(50, 50, 700, 400);
-            pliersRect = new Rectangle(50, 50, 700, 400);
+            pliersRect = new Rectangle(50, 50, 150, 100);
+            buttonRect = new Rectangle(50, 50, 245, 133);
             exploded = false;
             seconds = 0f;
             seconds = 0;
@@ -79,6 +83,8 @@ namespace Topic_4___Tracking_Time_and_Sound
             this.Window.Title = mouseState.Position.ToString();
 
             mouseState = Mouse.GetState();
+            pliersRect.X = mouseState.X;
+            pliersRect.Y = mouseState.Y;
 
             if (mouseState.LeftButton == ButtonState.Pressed)
                 seconds = 0f;
@@ -116,6 +122,7 @@ namespace Topic_4___Tracking_Time_and_Sound
                 _spriteBatch.Draw(bombTexture, bombRect, Color.White);
                 _spriteBatch.DrawString(bombText, seconds.ToString("00:0"), new Vector2(270, 200), Color.Black);
                 _spriteBatch.Draw(pliersTexture, pliersRect, Color.White);
+
             }
             else
             {
