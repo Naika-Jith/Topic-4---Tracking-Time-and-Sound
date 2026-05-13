@@ -22,7 +22,11 @@ namespace Topic_4___Tracking_Time_and_Sound
         Rectangle boomRect;
         Rectangle pliersRect;
         Rectangle buttonRect;
-       
+        Rectangle goodWireRect;
+        Rectangle badWireRect;
+
+        bool defused;
+
 
         SpriteFont bombText;
 
@@ -55,10 +59,15 @@ namespace Topic_4___Tracking_Time_and_Sound
             bombRect = new Rectangle(50, 50, 700, 400);
             boomRect = new Rectangle(50, 50, 700, 400);
             pliersRect = new Rectangle(50, 50, 150, 100);
-            buttonRect = new Rectangle(50, 50, 245, 133);
+            buttonRect = new Rectangle(247, 133, 50, 50);
             exploded = false;
             seconds = 0f;
             seconds = 0;
+
+            goodWireRect = new Rectangle(481, 163, 50, 50);
+            badWireRect = new Rectangle(488, 193, 50, 50);
+
+            defused = false;
 
             base.Initialize();
         }
@@ -80,33 +89,51 @@ namespace Topic_4___Tracking_Time_and_Sound
 
         protected override void Update(GameTime gameTime)
         {
-            this.Window.Title = mouseState.Position.ToString();
-
             mouseState = Mouse.GetState();
+            this.Window.Title = mouseState.Position.ToString(); 
             pliersRect.X = mouseState.X;
             pliersRect.Y = mouseState.Y;
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (mouseState.LeftButton == ButtonState.Pressed && buttonRect.Contains(mouseState.Position))
+            {
                 seconds = 0f;
+            }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
-            if (!exploded)
+
+            if (!exploded && !defused)
                 seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (seconds >= 15)
+            if (seconds >= 15 && !defused)
             {
                 explosionInstance.Play();
                 seconds = 0f;
                 exploded = true;
+
             }
-                
+
             if (exploded && explosionInstance.State == SoundState.Stopped)
                 Exit();
-            base.Update(gameTime);
 
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if (goodWireRect.Contains(mouseState.Position))
+                {
+                    defused = true;
+                }
+
+                if (badWireRect.Contains(mouseState.Position))
+                {
+                    exploded = true;
+                    explosionInstance.Play();
+                }
+            }
+
+
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
